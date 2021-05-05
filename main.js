@@ -24,12 +24,12 @@ window.onload = () => {
         const letters = ['H', 'E', 'S', 'T', 'I', 'A'];
         let switcher = 1;
         let counter = 0;
-        setInterval(() => {
-            counter ++;
-            if(counter % 12 === 0) {
-                switcher *= -1;
-            }
-        }, 1000);
+        // setInterval(() => {
+        //     counter ++;
+        //     if(counter % 12 === 0) {
+        //         switcher *= -1;
+        //     }
+        // }, 1000);
 
         ctx.drawImage(image, (canvas.width - Math.min(canvas.width, canvas.height) * imgRatio) / 2, 0, Math.min(canvas.width, canvas.height) * imgRatio, Math.min(canvas.width, canvas.height));
         const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
