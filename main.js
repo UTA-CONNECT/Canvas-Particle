@@ -22,6 +22,14 @@ window.onload = () => {
         gradient1.addColorStop(0.7, 'violet');
 
         const letters = ['H', 'E', 'S', 'T', 'I', 'A'];
+        let switcher = 1;
+        let counter = 0;
+        setInterval(() => {
+            counter ++;
+            if(counter % 12 === 0) {
+                switcher *= -1;
+            }
+        }, 1000);
 
         ctx.drawImage(image, (canvas.width - Math.min(canvas.width, canvas.height) * imgRatio) / 2, 0, Math.min(canvas.width, canvas.height) * imgRatio, Math.min(canvas.width, canvas.height));
         const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -80,13 +88,29 @@ window.onload = () => {
                 this.angle += this.speed / 20;
                 this.size = this.speed;
 
-                this.y += movement + Math.sin(this.angle) * 2;
-                this.x += movement + Math.cos(this.angle) * 2;
+                // ctx.globalCompositeOperation = 'lighter'//'luminosity'//'soft-light';
+                // if (switcher === 1) {
+                //     ctx.globalCompositeOperation = 'luminosity'//'luminosity'//'soft-light';
+                // } else {
+                //     ctx.globalCompositeOperation = 'soft-light'//'luminosity'//'soft-light';
+                // }
+
+                // if (counter % 10 === 0) {
+                //     this.x = Math.random() * canvas.width;
+                //     this.y = 0;
+                // }
+
+                this.y -= movement + Math.cos(this.angle) * 3;
+                this.x += movement + Math.sin(this.angle) * 1;
 
                 if (this.y >= canvas.height) {
                     this.y = 0;
                     this.x = Math.random() * canvas.width;
 
+                }
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
                 }
                 if (this.x >= canvas.width) {
                     this.x = 0;
