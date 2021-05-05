@@ -1,6 +1,6 @@
 window.onload = () => {
     const image = new Image()
-    image.src = './peko-min.png';
+    image.src = './hestia-min.PNG';
 
     image.addEventListener('load', () => {
         let imgRatio = image.width / image.height;
@@ -18,7 +18,7 @@ window.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         let particleArr = [];
-        const numOfParticle = 5000;
+        const numOfParticle = 10000;
 
         let mappedImage = [];
         for(let y = 0; y < canvas.height; y ++) {
@@ -88,10 +88,10 @@ window.onload = () => {
             ctx.globalAlpha = 0.05;
             ctx.fillStyle = 'rgb(0, 0, 0)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.globalAlpha = 0.2;
+            ctx.globalAlpha = 0.25;
             particleArr.forEach(particle => {
                 particle.update();
-                ctx.globalAlpha = particle.speed * 0.5;
+                ctx.globalAlpha = particle.speed * 0.25;
                 particle.draw();
             });
 
