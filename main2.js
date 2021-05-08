@@ -179,10 +179,9 @@ window.onload = () => {
 
         window.addEventListener('touchstart', (e) => {
             console.log('e', e);
-            e.touches.forEach(touch => {
-                // onMouseClick(touch);
-                onMouseClick(touchstart.clientX, touchstart.clientY);
-            })
+            for(let i = 0; i < e.touches.length; i ++) {
+                onMouseClick(e.touches[i].clientX, e.touches[i].clientY);
+            }
         })
 
         function animate() {
