@@ -81,10 +81,107 @@ window.onload = () => {
         })   
         const blockedPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // console.log(blockedPixels)
+
+        class PixelParticle {
+            constructor(x, y, rgba) {
+                this.x = x;
+                this.y = y;
+                this.rgba = rgba;
+                this.angle = 0;
+                this.beta = 0;
+                
+                this.goalX = x;
+                this.goalY = y;
+                this.speed = 0;
+            }
+
+            calcGoal(goalX, goalY) {
+                this.goalX = goalX;
+                this.goalY = goalY;
+
+                this.angle = (this.y - goalY) / (this.x - goalX);
+                this.beta = goalY - this.angle * goalX;
+                const distance = Math.sqrt((this.x - goalX) * (this.x - goalX) + (this.y - goalY) * (this.y - goalY));
+                if (distance < 200) {
+                    this.speed = (200 - distance) / (5 + Math.random() * 95);
+                }//(Math.max(canvas.width, canvas.height) - Math.sqrt((this.x - goalX) * (this.x - goalX) + (this.y - goalY) * (this.y - goalY))) / 10000;
+            }
+
+            update() {
+                if (Math.abs(this.angle) <= 1) {
+                    if (this.goalX > this.x) {
+                        this.x -= this.speed;
+                    } else if (this.goalX < this.x) {
+                        this.x += this.speed;
+                    }
+                    this.y = this.angle * this.x + this.beta;
+                } else {
+                    if (this.goalY > this.y) {
+                        this.y -= this.speed;
+                    } else if (this.goalY < this.y) {
+                        this.y += this.speed;
+                    }
+                    this.x = (this.y - this.beta) / this.angle;
+                }
+
+                if (this.speed > 0) {
+                    this.speed += (0 - this.speed) / 20;
+                } 
+            }
+
+            draw() {
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height)
+                    return;
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(${this.rgba[0]}, ${this.rgba[1]}, ${this.rgba[2]}, ${this.rgba[3]})`;
+                ctx.arc(this.x, this.y, 1, 0, Math.PI * 2);
+                // ctx.fillRect(this.x, this.y, 1, 1);
+                ctx.fill();
+            }
+        }
+
+        const pixelParticleArr = [];
+
+        for(let i = 0; i < canvas.height; i += gap) {
+            for(let t = 0; t < canvas.width; t += gap) {
+                const r = blockedPixels.data[i * canvas.width * 4 + t * 4];
+                const g = blockedPixels.data[i * canvas.width * 4 + t * 4 + 1];
+                const b = blockedPixels.data[i * canvas.width * 4 + t * 4 + 2];
+                const a = blockedPixels.data[i * canvas.width * 4 + t * 4 + 3];
+                if (r * g * b * a > 0) {
+                        pixelParticleArr.push(new PixelParticle(t, i, 
+                            [
+                                r, g, b, a
+                            ]))
+                    }
+            }
+        }
+        console.log(`pixelParticleArr len: ${pixelParticleArr.length}`, pixelParticleArr[0])
         
+        // pixelParticleArr.forEach(pixelParticle => {
+        //     pixelParticle.draw();
+        // });
+
+        function onMouseClick(x, y) {
+            pixelParticleArr.forEach(pixelParticle => {
+                pixelParticle.calcGoal(x, y);
+            })
+        }
+        onMouseClick(canvas.width / 2, 0);
+
+        window.addEventListener('click', (e) => {
+            console.log('e', e);
+            onMouseClick(e.clientX, e.clientY);
+        })
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.putImageData(blockedPixels, 0, 0);
+            // ctx.putImageData(blockedPixels, 0, 0);
+            pixelParticleArr.forEach(pixelParticle => {
+                pixelParticle.update();
+                pixelParticle.draw();
+            });
             requestAnimationFrame(animate);
         }
 
