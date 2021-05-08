@@ -16,8 +16,10 @@ window.onload = () => {
         const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const gap = 15;
-        const block = 50;
+        const gap = 5;
+        const block = 70;
+        let pw = 0; // particle width
+        let ph = 0; // particle height;
 
         class Particle {
             constructor(x, y, w, h, pixelBlock) {
@@ -30,9 +32,15 @@ window.onload = () => {
 
             draw() {
                 // console.log(this.pixelBlock);
+                const arrHeight = this.h;
+                const arrWidth = this.w;
+                const halfHeight = arrHeight / 2;
+                const halfWidth = arrWidth / 2;
                 for(let i = 0; i < this.h && i < this.pixelBlock.length; i ++) {
                     for(let t = 0; t < this.w && t < this.pixelBlock[i].length; t ++) {
-                        ctx.fillStyle = `rgb(${this.pixelBlock[i][t][0]}, ${this.pixelBlock[i][t][1]}, ${this.pixelBlock[i][t][2]})`;
+                        // const alpha =  1 - ((Math.abs(t - halfWidth)) / arrWidth + (Math.abs(i - halfHeight)) / arrHeight) ;
+                        const alpha = 1 - Math.sqrt((i - halfHeight) * (i - halfHeight) + (t - halfWidth) * (t - halfWidth)) / Math.max(this.w, this.h);
+                        ctx.fillStyle = `rgba(${this.pixelBlock[i][t][0]}, ${this.pixelBlock[i][t][1]}, ${this.pixelBlock[i][t][2]}, ${alpha})`;
                         ctx.fillRect(this.x + t, this.y + i, 1, 1);
                     }
                 }
@@ -42,6 +50,7 @@ window.onload = () => {
         const particleArr = [];
 
         for(let i = gap; i < canvas.height; i += gap + block) { // y
+            const particleRow = [];
             for(let t = gap; t < canvas.width; t += gap + block) { // x
                 const pixelBlock = [];
                 for(let q = i; q < i + block && q < canvas.height; q ++) { // y block
@@ -51,15 +60,23 @@ window.onload = () => {
                     }
                     pixelBlock.push(row);
                 }
-                particleArr.push(new Particle(t, i, block, block, pixelBlock));
+                particleRow.push(new Particle(t, i, block, block, pixelBlock));
                 // if (i == gap + gap + block && t == gap) {
                 //     console.log(pixelBlock);
                 // }
             }
+            particleArr.push(particleRow);
+            pw = particleRow.length;
         }
 
-        particleArr.forEach(particle => {
-            particle.draw();
+        ph = particleArr.length;
+
+        console.log(`pw: ${pw}, ph: ${ph}`)
+
+        particleArr.forEach(particleRow => {
+            particleRow.forEach(particle => {
+                particle.draw();
+            })
         })
     })
 }
