@@ -39,7 +39,7 @@ window.onload = () => {
                 for(let i = 0; i < this.h && i < this.pixelBlock.length; i ++) {
                     for(let t = 0; t < this.w && t < this.pixelBlock[i].length; t ++) {
                         // const alpha =  1 - ((Math.abs(t - halfWidth)) / arrWidth + (Math.abs(i - halfHeight)) / arrHeight) ;
-                        const alpha = 1 - Math.sqrt((i - halfHeight) * (i - halfHeight) + (t - halfWidth) * (t - halfWidth)) / Math.max(this.w, this.h);
+                        const alpha = 1 - Math.sqrt((i - halfHeight) * (i - halfHeight) + (t - halfWidth) * (t - halfWidth)) / Math.max(this.w, this.h) ;
                         ctx.fillStyle = `rgba(${this.pixelBlock[i][t][0]}, ${this.pixelBlock[i][t][1]}, ${this.pixelBlock[i][t][2]}, ${alpha})`;
                         ctx.fillRect(this.x + t, this.y + i, 1, 1);
                     }
@@ -73,10 +73,21 @@ window.onload = () => {
 
         console.log(`pw: ${pw}, ph: ${ph}`)
 
+
         particleArr.forEach(particleRow => {
             particleRow.forEach(particle => {
                 particle.draw();
             })
-        })
+        })   
+        const blockedPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.putImageData(blockedPixels, 0, 0);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
     })
 }
