@@ -145,8 +145,8 @@ window.onload = () => {
 
         const pixelParticleArr = [];
 
-        for(let i = 0; i < canvas.height; i += gap) {
-            for(let t = 0; t < canvas.width; t += gap) {
+        for(let i = gap; i < canvas.height; i += gap) {
+            for(let t = gap; t < canvas.width; t += gap) {
                 const r = blockedPixels.data[i * canvas.width * 4 + t * 4];
                 const g = blockedPixels.data[i * canvas.width * 4 + t * 4 + 1];
                 const b = blockedPixels.data[i * canvas.width * 4 + t * 4 + 2];
