@@ -22,11 +22,30 @@
             left: 10px;
             z-index: 999;
         }
+
+        div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 900;
+            width: 100vw;
+            height: 100vh;
+            line-height: 100vh;
+            vertical-align:middle;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <button id="button1">Go Next</button>
     <canvas id="canvas1"></canvas>
+    <div id="loadingDiv">
+        <h1>Loading...</h1>
+    </div>
     <script src="main2.js"></script>
     <script>
         document.getElementById("button1").addEventListener("click", () => {

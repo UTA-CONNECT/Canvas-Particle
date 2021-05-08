@@ -1,4 +1,6 @@
 window.onload = () => {
+    const loadingDiv = document.getElementById('loadingDiv');
+
     const image = new Image()
     image.src = './hestia-min.PNG';
     image.addEventListener('load', () => {
@@ -185,6 +187,7 @@ window.onload = () => {
             requestAnimationFrame(animate);
         }
 
+        loadingDiv.remove();
         animate();
     })
 }
