@@ -177,6 +177,14 @@ window.onload = () => {
             onMouseClick(e.clientX, e.clientY);
         })
 
+        window.addEventListener('touchstart', (e) => {
+            console.log('e', e);
+            e.touches.forEach(touch => {
+                // onMouseClick(touch);
+                onMouseClick(touchstart.clientX, touchstart.clientY);
+            })
+        })
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             // ctx.putImageData(blockedPixels, 0, 0);
