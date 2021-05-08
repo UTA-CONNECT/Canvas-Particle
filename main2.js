@@ -99,35 +99,33 @@ window.onload = () => {
             }
 
             calcGoal(goalX, goalY) {
-                this.goalX = goalX;
-                this.goalY = goalY;
-
-                this.angle = (this.y - goalY) / (this.x - goalX);
-                this.beta = goalY - this.angle * goalX;
                 const distance = Math.sqrt((this.x - goalX) * (this.x - goalX) + (this.y - goalY) * (this.y - goalY));
                 if (distance < 200) {
+                    this.goalX = goalX;
+                    this.goalY = goalY;
+                    this.angle = (this.y - goalY) / (this.x - goalX);
+                    this.beta = goalY - this.angle * goalX;
                     this.speed = (200 - distance) / (5 + Math.random() * 95);
                 }//(Math.max(canvas.width, canvas.height) - Math.sqrt((this.x - goalX) * (this.x - goalX) + (this.y - goalY) * (this.y - goalY))) / 10000;
             }
 
             update() {
-                if (Math.abs(this.angle) <= 1) {
-                    if (this.goalX > this.x) {
-                        this.x -= this.speed;
-                    } else if (this.goalX < this.x) {
-                        this.x += this.speed;
-                    }
-                    this.y = this.angle * this.x + this.beta;
-                } else {
-                    if (this.goalY > this.y) {
-                        this.y -= this.speed;
-                    } else if (this.goalY < this.y) {
-                        this.y += this.speed;
-                    }
-                    this.x = (this.y - this.beta) / this.angle;
-                }
-
                 if (this.speed > 0) {
+                    if (Math.abs(this.angle) <= 1) {
+                        if (this.goalX > this.x) {
+                            this.x -= this.speed;
+                        } else if (this.goalX < this.x) {
+                            this.x += this.speed;
+                        }
+                        this.y = this.angle * this.x + this.beta;
+                    } else {
+                        if (this.goalY > this.y) {
+                            this.y -= this.speed;
+                        } else if (this.goalY < this.y) {
+                            this.y += this.speed;
+                        }
+                        this.x = (this.y - this.beta) / this.angle;
+                    }
                     this.speed += (0 - this.speed) / 20;
                 } 
             }
