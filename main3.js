@@ -47,15 +47,23 @@ window.onload = () => {
     })
 
     window.addEventListener('touchstart', (e) => {
-
+        viewPort.isMove = true;
+        viewPort.xTmp = e.touches[0].clientX;
+        viewPort.yTmp = e.touches[0].clientY;
     })
 
     window.addEventListener('touchmove', (e) => {
-
+        if (viewPort.isMove) {
+            viewPort.x += e.touches[0].clientX - viewPort.xTmp;
+            viewPort.y += e.touches[0].clientY - viewPort.yTmp;
+            // console.log(viewPort);
+            viewPort.xTmp = e.touches[0].clientX;
+            viewPort.yTmp = e.touches[0].clientY;
+        }
     })
 
     window.addEventListener('touchend', (e) => {
-
+        viewPort.isMove = false;
     })
 
     function initCanvasSize(canvas) {
