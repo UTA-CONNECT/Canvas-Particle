@@ -54,8 +54,8 @@ window.onload = () => {
 
     window.addEventListener('touchmove', (e) => {
         if (viewPort.isMove) {
-            viewPort.x += e.touches[0].clientX - viewPort.xTmp;
-            viewPort.y += e.touches[0].clientY - viewPort.yTmp;
+            viewPort.x += (e.touches[0].clientX - viewPort.xTmp) * window.devicePixelRatio;
+            viewPort.y += (e.touches[0].clientY - viewPort.yTmp) * window.devicePixelRatio;
             // console.log(viewPort);
             viewPort.xTmp = e.touches[0].clientX;
             viewPort.yTmp = e.touches[0].clientY;
