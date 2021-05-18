@@ -92,7 +92,7 @@ window.onload = () => {
             let centerX = this.x + this.w / 2;
             let centerY = this.y + this.h / 2;
 
-            this.distance = Math.sqrt(Math.pow(window.innerWidth / 2 - centerX, 2) + Math.pow(window.innerHeight / 2 - centerY, 2));
+            this.distance = Math.sqrt(Math.pow((window.innerWidth * window.devicePixelRatio) / 2 - centerX, 2) + Math.pow((window.innerHeight * window.devicePixelRatio) / 2 - centerY, 2));
 
             this.scale = (this.w * this.h / 100 - this.distance) / (this.w * this.h / 100);
         }
@@ -125,7 +125,7 @@ window.onload = () => {
     function animate() {
         requestAnimationFrame(animate);
 
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.clearRect(0, 0, window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
 
         // ctx.strokeRect(viewPort.x + viewPort.left, viewPort.y + viewPort.top, viewPort.right - viewPort.left, viewPort.bottom - viewPort.top);
 
